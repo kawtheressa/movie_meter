@@ -1,8 +1,15 @@
 <h1>All Movies</h1>
 
+<%= form_tag(search_movies_path, method: "get") do %>
+  <%= label_tag(:actor_name, "Search for Actor:") %>
+  <%= text_field_tag(:actor_name) %>
+  <%= submit_tag("Search") %>
+<% end %>
+
 <%= form_tag(movies_path, method: "get") do %>
-  <%= text_field_tag :actor_search, params[:actor_search], placeholder: "Search for an actor" %>
-  <%= submit_tag "Search" %>
+  <%= label_tag(:sort_by, "Sort By:") %>
+  <%= select_tag :sort_by, options_for_select([["Sort by Average Stars", "average_stars"], ["Sort by Created Date", "created_at"]], params[:sort_by]), prompt: "Sort by" %>
+  <%= submit_tag "Sort" %>
 <% end %>
 
 <table class="table">
@@ -14,6 +21,7 @@
     <th>Actors</th>
     <th>Filming Locations</th>
     <th>Countries</th>
+    <th>Reviews</th>
   </tr>
 
   <% @movies.each do |movie| %>
@@ -43,6 +51,14 @@
         <ul>
           <% movie.countries.each do |country| %>
             <li><%= country.name %></li>
+          <% end %>
+        </ul>
+      </td>
+
+      <td>
+        <ul>
+          <% movie.reviews.each do |review| %>
+            <li><%= "#{review.stars} stars review with comment #{review.comment} By #{review.user.name}" %></li>
           <% end %>
         </ul>
       </td>

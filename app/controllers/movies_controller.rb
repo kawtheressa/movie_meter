@@ -1,9 +1,13 @@
 class MoviesController < ApplicationController
   def index
-    if params[:actor_search].present?
-      @movies = Movie.joins(:actors).where("actors.name LIKE ?", "%#{params[:actor_search]}%").uniq
+    @movies = Movie.joins(:reviews)
+    
+    case params[:sort_by]
+    when 'average_stars'
+      @movies = @movies.group(:id)
+                       .order("AVG(reviews.stars) DESC NULLS LAST")
     else
-      @movies = Movie.all
+      @movies = @movies.order(created_at: :desc).uniq
     end
   end
 
