@@ -1,0 +1,51 @@
+<h1>All Movies</h1>
+
+<%= form_tag(movies_path, method: "get") do %>
+  <%= text_field_tag :actor_search, params[:actor_search], placeholder: "Search for an actor" %>
+  <%= submit_tag "Search" %>
+<% end %>
+
+<table class="table">
+  <tr>
+    <th>Title</th>
+    <th>Release Year</th>
+    <th>description</th>
+    <th>director</th>
+    <th>Actors</th>
+    <th>Filming Locations</th>
+    <th>Countries</th>
+  </tr>
+
+  <% @movies.each do |movie| %>
+    <tr>
+      <td><%= movie.title %></td>
+      <td><%= movie.release_year %></td>
+      <td><%= movie.description %></td>
+      <td><%= movie.director %></td>
+
+      <td>
+        <ul>
+          <% movie.actors.each do |actor| %>
+            <li><%= actor.name %></li>
+          <% end %>
+        </ul>
+      </td>
+
+      <td>
+        <ul>
+          <% movie.filming_locations.each do |filming_location| %>
+            <li><%= filming_location.name %></li>
+          <% end %>
+        </ul>
+      </td>
+
+      <td>
+        <ul>
+          <% movie.countries.each do |country| %>
+            <li><%= country.name %></li>
+          <% end %>
+        </ul>
+      </td>
+    </tr>
+  <% end %>
+</table>
