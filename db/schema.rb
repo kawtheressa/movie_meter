@@ -10,19 +10,57 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_02_15_120327) do
+ActiveRecord::Schema[7.1].define(version: 2024_02_15_131319) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "actors", force: :cascade do |t|
+    t.string "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "actors_movies", id: false, force: :cascade do |t|
+    t.bigint "actor_id"
+    t.bigint "movie_id"
+    t.index ["actor_id", "movie_id"], name: "index_actors_movies_on_actor_id_and_movie_id"
+    t.index ["actor_id"], name: "index_actors_movies_on_actor_id"
+    t.index ["movie_id"], name: "index_actors_movies_on_movie_id"
+  end
+
+  create_table "countries", force: :cascade do |t|
+    t.string "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "countries_movies", id: false, force: :cascade do |t|
+    t.bigint "country_id"
+    t.bigint "movie_id"
+    t.index ["country_id", "movie_id"], name: "index_countries_movies_on_country_and_movie"
+    t.index ["country_id"], name: "index_countries_movies_on_country_id"
+    t.index ["movie_id"], name: "index_countries_movies_on_movie_id"
+  end
+
+  create_table "filming_locations", force: :cascade do |t|
+    t.string "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "filming_locations_movies", id: false, force: :cascade do |t|
+    t.bigint "filming_location_id"
+    t.bigint "movie_id"
+    t.index ["filming_location_id", "movie_id"], name: "index_filming_locations_movies_on_location_and_movie"
+    t.index ["filming_location_id"], name: "index_filming_locations_movies_on_filming_location_id"
+    t.index ["movie_id"], name: "index_filming_locations_movies_on_movie_id"
+  end
 
   create_table "movies", force: :cascade do |t|
     t.string "title"
     t.text "description"
     t.integer "release_year"
     t.string "director"
-    t.string "actor"
-    t.string "filming"
-    t.string "location"
-    t.string "country"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
